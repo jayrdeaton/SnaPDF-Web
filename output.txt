@@ -1,4 +1,0 @@
-<Suspense> is an experimental feature and its API will likely change.
-
-(node:40294) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
-(Use `node --trace-warnings ...` to show where the warning was created)

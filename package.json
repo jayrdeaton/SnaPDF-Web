@@ -28,7 +28,7 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@sparticuz/chromium": "^149.0.0",
     "nuxt": "^4.4.6",
-    "snapdf": "^1.0.4",
+    "snapdf": "^1.0.6",
     "vue": "^3.5.13",
     "vue-router": "^5.1.0"
   },

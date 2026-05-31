@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
   // Then set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true in Vercel env vars.
   let executablePath: string | undefined = process.env.CHROME_EXECUTABLE_PATH
 
-  if (process.env.VERCEL) {
+  if (process.env.VERCEL && process.platform === 'linux') {
     try {
       const chromium = await import('@sparticuz/chromium' as string)
       executablePath = await (chromium.default as { executablePath: () => Promise<string> }).executablePath()
@@ -46,8 +46,9 @@ export default defineEventHandler(async (event) => {
       const text = await fetchTxt(url, { onProgress, executablePath })
       send({ type: 'complete', data: Buffer.from(text).toString('base64'), filename: `${hostname}.txt`, mimeType: 'text/plain' })
     } else {
-      const buffer = await fetchPdf(url, { onProgress, executablePath, pageSize, margin, landscape })
-      send({ type: 'complete', data: buffer.toString('base64'), filename: `${hostname}.pdf`, mimeType: 'application/pdf' })
+      const { buffer, title } = await fetchPdf(url, { onProgress, executablePath, pageSize, margin, landscape })
+      const safeName = title ? title.replace(/[/\\:*?"<>|]/g, '-').trim() : hostname
+      send({ type: 'complete', data: buffer.toString('base64'), filename: `${safeName}.pdf`, mimeType: 'application/pdf' })
     }
   } catch (err) {
     send({ type: 'error', message: err instanceof Error ? err.message : 'Conversion failed' })
