@@ -5,11 +5,7 @@
       <div class="max-w-3xl mx-auto flex items-center justify-between">
         <span class="text-base font-semibold tracking-tight">SnaPDF</span>
         <div class="flex items-center gap-3">
-          <button
-            :aria-label="colorMode.preference === 'system' ? 'System mode' : colorMode.preference === 'light' ? 'Light mode' : 'Dark mode'"
-            class="p-1.5 rounded-lg text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-            @click="cycleColorMode"
-          >
+          <button :aria-label="colorMode.preference === 'system' ? 'System mode' : colorMode.preference === 'light' ? 'Light mode' : 'Dark mode'" class="p-1.5 rounded-lg text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors" @click="cycleColorMode">
             <!-- Monitor: auto/system -->
             <svg v-if="colorMode.preference === 'system'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="3" width="20" height="14" rx="2" />
@@ -51,14 +47,7 @@
         <!-- URL -->
         <div class="mb-5">
           <label for="url-input" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Share link</label>
-          <input
-            id="url-input"
-            v-model="url"
-            type="url"
-            placeholder="https://chatgpt.com/share/..."
-            :disabled="converting"
-            class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-sm placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-sky-500 disabled:opacity-50 transition-colors"
-          />
+          <input id="url-input" v-model="url" type="url" placeholder="https://chatgpt.com/share/..." :disabled="converting" class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-sm placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-sky-500 disabled:opacity-50 transition-colors" />
         </div>
 
         <!-- Settings row -->
@@ -67,14 +56,7 @@
           <div>
             <p class="text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Format</p>
             <div class="flex gap-1.5">
-              <button
-                v-for="f in ['pdf', 'txt']"
-                :key="f"
-                :disabled="converting"
-                :class="format === f ? 'bg-sky-500 text-white' : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700'"
-                class="px-4 py-2 rounded-lg text-sm font-medium uppercase transition-colors disabled:opacity-50"
-                @click="format = f as 'pdf' | 'txt'"
-              >
+              <button v-for="f in ['pdf', 'txt']" :key="f" :disabled="converting" :class="format === f ? 'bg-sky-500 text-white' : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700'" class="px-4 py-2 rounded-lg text-sm font-medium uppercase transition-colors disabled:opacity-50" @click="format = f as 'pdf' | 'txt'">
                 {{ f }}
               </button>
             </div>
@@ -83,12 +65,7 @@
           <!-- Page size — PDF only -->
           <div v-if="format === 'pdf'">
             <label for="page-size" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Page size</label>
-            <select
-              id="page-size"
-              v-model="pageSize"
-              :disabled="converting"
-              class="bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-sky-500"
-            >
+            <select id="page-size" v-model="pageSize" :disabled="converting" class="bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-sky-500">
               <option value="letter">Letter</option>
               <option value="a4">A4</option>
             </select>
@@ -97,15 +74,7 @@
           <!-- Margin — PDF only -->
           <div v-if="format === 'pdf'">
             <label for="margin" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Margin <span class="font-normal text-gray-400 dark:text-zinc-500">(pt)</span></label>
-            <input
-              id="margin"
-              v-model.number="margin"
-              type="number"
-              min="0"
-              max="144"
-              :disabled="converting"
-              class="w-20 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-sky-500"
-            />
+            <input id="margin" v-model.number="margin" type="number" min="0" max="144" :disabled="converting" class="w-20 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-sky-500" />
           </div>
 
           <!-- Landscape — PDF only -->
@@ -118,35 +87,21 @@
         </div>
 
         <!-- Submit -->
-        <button
-          :disabled="!url.trim() || converting"
-          class="w-full bg-sky-500 hover:bg-sky-400 disabled:bg-gray-100 dark:disabled:bg-zinc-800 disabled:text-gray-400 dark:disabled:text-zinc-600 text-white font-semibold rounded-lg py-3 text-sm transition-colors"
-          @click="convert"
-        >
+        <button :disabled="!url.trim() || converting" class="w-full bg-sky-500 hover:bg-sky-400 disabled:bg-gray-100 dark:disabled:bg-zinc-800 disabled:text-gray-400 dark:disabled:text-zinc-600 text-white font-semibold rounded-lg py-3 text-sm transition-colors" @click="convert">
           {{ converting ? 'Converting…' : `Convert to ${format.toUpperCase()}` }}
         </button>
       </div>
 
       <!-- Progress terminal — always dark, intentionally -->
       <div v-if="progress.length > 0 || error" class="bg-black border border-zinc-800 rounded-2xl p-5 mb-6 font-mono text-sm leading-relaxed overflow-auto max-h-64">
-        <p v-for="(msg, i) in progress" :key="i" class="text-emerald-400">
-          <span class="text-zinc-600 select-none">› </span>{{ msg }}
-        </p>
-        <p v-if="error" class="text-red-400">
-          <span class="text-zinc-600 select-none">✗ </span>{{ error }}
-        </p>
+        <p v-for="(msg, i) in progress" :key="i" class="text-emerald-400"><span class="text-zinc-600 select-none">› </span>{{ msg }}</p>
+        <p v-if="error" class="text-red-400"><span class="text-zinc-600 select-none">✗ </span>{{ error }}</p>
         <span v-if="converting" class="text-zinc-500 animate-pulse">▌</span>
       </div>
 
       <!-- Download -->
       <div v-if="downloadUrl" class="flex justify-center">
-        <a
-          :href="downloadUrl"
-          :download="downloadFilename"
-          class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-lg px-7 py-3 text-sm transition-colors"
-        >
-          ↓ Download {{ downloadFilename }}
-        </a>
+        <a :href="downloadUrl" :download="downloadFilename" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-lg px-7 py-3 text-sm transition-colors"> ↓ Download {{ downloadFilename }} </a>
       </div>
 
       <!-- Divider -->
@@ -167,10 +122,10 @@
 
         <!-- Options -->
         <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5 mb-10 font-mono text-sm text-gray-700 dark:text-zinc-300 leading-7 shadow-sm dark:shadow-none">
-          <p><span class="text-sky-500 dark:text-sky-400">--format</span> <span class="text-gray-400 dark:text-zinc-500">pdf|txt</span>  Output format (default: pdf)</p>
-          <p><span class="text-sky-500 dark:text-sky-400">--page-size</span> <span class="text-gray-400 dark:text-zinc-500">letter|a4</span>  Paper size (default: letter)</p>
-          <p><span class="text-sky-500 dark:text-sky-400">--landscape</span>  Landscape orientation</p>
-          <p><span class="text-sky-500 dark:text-sky-400">--timeout</span> <span class="text-gray-400 dark:text-zinc-500">ms</span>  Navigation timeout (default: 60000)</p>
+          <p><span class="text-sky-500 dark:text-sky-400">--format</span> <span class="text-gray-400 dark:text-zinc-500">pdf|txt</span> Output format (default: pdf)</p>
+          <p><span class="text-sky-500 dark:text-sky-400">--page-size</span> <span class="text-gray-400 dark:text-zinc-500">letter|a4</span> Paper size (default: letter)</p>
+          <p><span class="text-sky-500 dark:text-sky-400">--landscape</span> Landscape orientation</p>
+          <p><span class="text-sky-500 dark:text-sky-400">--timeout</span> <span class="text-gray-400 dark:text-zinc-500">ms</span> Navigation timeout (default: 60000)</p>
         </div>
 
         <!-- Feature cards -->
@@ -256,10 +211,7 @@ const convert = () => {
   eventSource = new EventSource(`/api/convert?${params.toString()}`)
 
   eventSource.onmessage = (event) => {
-    type ConvertEvent =
-      | { type: 'progress'; message: string }
-      | { type: 'complete'; data: string; filename: string; mimeType: string }
-      | { type: 'error'; message: string }
+    type ConvertEvent = { type: 'progress'; message: string } | { type: 'complete'; data: string; filename: string; mimeType: string } | { type: 'error'; message: string }
 
     const msg = JSON.parse(event.data as string) as ConvertEvent
 

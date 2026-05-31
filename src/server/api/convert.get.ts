@@ -39,13 +39,15 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const hostname = new URL(url).hostname.replace(/^www\./, '').replaceAll('.', '-')
+
   try {
     if (format === 'txt') {
       const text = await fetchTxt(url, { onProgress, executablePath })
-      send({ type: 'complete', data: Buffer.from(text).toString('base64'), filename: 'conversation.txt', mimeType: 'text/plain' })
+      send({ type: 'complete', data: Buffer.from(text).toString('base64'), filename: `${hostname}.txt`, mimeType: 'text/plain' })
     } else {
       const buffer = await fetchPdf(url, { onProgress, executablePath, pageSize, margin, landscape })
-      send({ type: 'complete', data: buffer.toString('base64'), filename: 'conversation.pdf', mimeType: 'application/pdf' })
+      send({ type: 'complete', data: buffer.toString('base64'), filename: `${hostname}.pdf`, mimeType: 'application/pdf' })
     }
   } catch (err) {
     send({ type: 'error', message: err instanceof Error ? err.message : 'Conversion failed' })

@@ -15,7 +15,7 @@ module.exports = defineConfig([
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.json',
+        projectService: { allowDefaultProject: ['*.config.ts'] },
         extraFileExtensions: ['.vue']
       }
     }
@@ -26,7 +26,7 @@ module.exports = defineConfig([
       parser: vueParser,
       parserOptions: {
         parser: tsParser,
-        project: './tsconfig.json',
+        projectService: { allowDefaultProject: ['*.config.ts'] },
         extraFileExtensions: ['.vue']
       }
     }
