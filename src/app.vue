@@ -6,12 +6,18 @@
         <span class="text-base font-semibold tracking-tight">SnaPDF</span>
         <div class="flex items-center gap-3">
           <button
-            :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            :aria-label="colorMode.preference === 'system' ? 'System mode' : colorMode.preference === 'light' ? 'Light mode' : 'Dark mode'"
             class="p-1.5 rounded-lg text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-            @click="toggleColorMode"
+            @click="cycleColorMode"
           >
-            <!-- Sun: shown in dark mode to switch to light -->
-            <svg v-if="colorMode.value === 'dark'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Monitor: auto/system -->
+            <svg v-if="colorMode.preference === 'system'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <!-- Sun: light mode -->
+            <svg v-else-if="colorMode.preference === 'light'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="5" />
               <line x1="12" y1="1" x2="12" y2="3" />
               <line x1="12" y1="21" x2="12" y2="23" />
@@ -22,7 +28,7 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
             </svg>
-            <!-- Moon: shown in light mode to switch to dark -->
+            <!-- Moon: dark mode -->
             <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
@@ -86,6 +92,20 @@
               <option value="letter">Letter</option>
               <option value="a4">A4</option>
             </select>
+          </div>
+
+          <!-- Margin — PDF only -->
+          <div v-if="format === 'pdf'">
+            <label for="margin" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Margin <span class="font-normal text-gray-400 dark:text-zinc-500">(pt)</span></label>
+            <input
+              id="margin"
+              v-model.number="margin"
+              type="number"
+              min="0"
+              max="144"
+              :disabled="converting"
+              class="w-20 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-sky-500"
+            />
           </div>
 
           <!-- Landscape — PDF only -->
@@ -174,13 +194,19 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 
-const toggleColorMode = () => {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+const cycleColorMode = () => {
+  const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  if (colorMode.preference === 'system') colorMode.preference = systemIsDark ? 'light' : 'dark'
+  else if (colorMode.preference === 'dark') colorMode.preference = systemIsDark ? 'system' : 'light'
+  else colorMode.preference = systemIsDark ? 'dark' : 'system'
 }
 
 const url = ref('')
 const format = ref<'pdf' | 'txt'>('pdf')
-const pageSize = ref<'letter' | 'a4'>('letter')
+const letterRegions = new Set(['US', 'CA', 'MX', 'PH', 'CO', 'VE', 'GT', 'HN', 'SV', 'NI', 'CR', 'PA', 'CU', 'DO', 'PR'])
+const detectedRegion = import.meta.client ? (new Intl.Locale(navigator.language).region ?? '') : ''
+const pageSize = ref<'letter' | 'a4'>(letterRegions.has(detectedRegion) ? 'letter' : 'a4')
+const margin = ref(36)
 const landscape = ref(false)
 const converting = ref(false)
 const progress = ref<string[]>([])
@@ -222,6 +248,7 @@ const convert = () => {
     url: url.value.trim(),
     format: format.value,
     pageSize: pageSize.value,
+    margin: String(margin.value),
     landscape: String(landscape.value)
   })
 
@@ -247,6 +274,10 @@ const convert = () => {
       downloadFilename.value = msg.filename
       converting.value = false
       eventSource?.close()
+      const a = document.createElement('a')
+      a.href = downloadUrl.value
+      a.download = msg.filename
+      a.click()
     } else if (msg.type === 'error') {
       error.value = msg.message
       converting.value = false

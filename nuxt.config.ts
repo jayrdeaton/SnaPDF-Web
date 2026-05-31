@@ -1,5 +1,7 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-11-01',
+  srcDir: 'src',
+  serverDir: 'src/server',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
   colorMode: {
@@ -9,5 +11,12 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: true
+  },
+  nitro: {
+    vercel: {
+      functions: {
+        maxDuration: 300
+      }
+    }
   }
 })

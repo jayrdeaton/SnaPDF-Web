@@ -1,9 +1,4 @@
 {
   "framework": "nuxtjs",
-  "buildCommand": "npm run build",
-  "functions": {
-    "server/**": {
-      "maxDuration": 300
-    }
-  }
+  "buildCommand": "npm run build"
 }
