@@ -29,11 +29,14 @@ export default defineEventHandler(async (event) => {
   // the serverless environment. Install it: npm i @sparticuz/chromium
   // Then set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true in Vercel env vars.
   let executablePath: string | undefined = process.env.CHROME_EXECUTABLE_PATH
+  let args: string[] | undefined
 
   if (process.env.VERCEL && process.platform === 'linux') {
     try {
       const chromium = await import('@sparticuz/chromium' as string)
-      executablePath = await (chromium.default as { executablePath: () => Promise<string> }).executablePath()
+      const c = chromium.default as { executablePath: () => Promise<string>; args: string[] }
+      executablePath = await c.executablePath()
+      args = c.args
     } catch {
       // @sparticuz/chromium not installed — Puppeteer will use its bundled Chrome
     }
@@ -43,10 +46,10 @@ export default defineEventHandler(async (event) => {
 
   try {
     if (format === 'txt') {
-      const text = await fetchTxt(url, { onProgress, executablePath })
+      const text = await fetchTxt(url, { onProgress, executablePath, args })
       send({ type: 'complete', data: Buffer.from(text).toString('base64'), filename: `${hostname}.txt`, mimeType: 'text/plain' })
     } else {
-      const { buffer, title } = await fetchPdf(url, { onProgress, executablePath, pageSize, margin, landscape })
+      const { buffer, title } = await fetchPdf(url, { onProgress, executablePath, args, pageSize, margin, landscape })
       const safeName = title ? title.replace(/[/\\:*?"<>|]/g, '-').trim() : hostname
       send({ type: 'complete', data: buffer.toString('base64'), filename: `${safeName}.pdf`, mimeType: 'application/pdf' })
     }
