@@ -3,7 +3,10 @@
     <!-- Header -->
     <header class="border-b border-gray-200 dark:border-zinc-800 px-6 py-4 flex-shrink-0">
       <div class="max-w-3xl mx-auto flex items-center justify-between">
-        <span class="text-base font-semibold tracking-tight">SnaPDF</span>
+        <div class="flex items-center gap-2">
+          <img src="/icon.svg" alt="SnaPDF" class="w-6 h-6" />
+          <span class="text-base font-semibold tracking-tight">SnaPDF</span>
+        </div>
         <div class="flex items-center gap-3">
           <button :aria-label="colorMode.preference === 'system' ? 'System mode' : colorMode.preference === 'light' ? 'Light mode' : 'Dark mode'" class="p-1.5 rounded-lg text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors" @click="cycleColorMode">
             <!-- Monitor: auto/system -->
