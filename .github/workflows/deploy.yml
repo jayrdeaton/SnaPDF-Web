@@ -20,6 +20,11 @@ jobs:
 
       - run: npm ci
 
+      - name: Test
+        run: npm test
+        env:
+          NODE_OPTIONS: --no-experimental-webstorage
+
       - run: npm install -g vercel@latest
 
       - name: Pull Vercel environment
