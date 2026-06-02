@@ -10,4 +10,16 @@ html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(249 250 251);
+}
+
+html.dark {
+  background-color: rgb(9 9 11);
+  color-scheme: dark;
+}
+
+body,
+#__nuxt {
+  min-height: 100vh;
+  background-color: transparent;
 }
