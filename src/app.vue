@@ -105,7 +105,7 @@
       </div>
 
       <!-- Progress terminal — always dark, intentionally -->
-      <div v-if="progress.length > 0 || error" class="bg-black border border-zinc-800 rounded-2xl p-5 mb-6 font-mono text-sm leading-relaxed overflow-auto max-h-64">
+      <div v-if="progress.length > 0 || error" ref="progressContainer" class="bg-black border border-zinc-800 rounded-2xl p-5 mb-6 font-mono text-sm leading-relaxed overflow-auto max-h-64">
         <p v-for="(msg, i) in progress" :key="i" class="text-emerald-400"><span class="text-zinc-600 select-none">› </span>{{ msg }}</p>
         <p v-if="error" class="text-red-400"><span class="text-zinc-600 select-none">✗ </span>{{ error }}</p>
         <span v-if="converting" class="text-zinc-500 animate-pulse">▌</span>
@@ -159,6 +159,8 @@
 </template>
 
 <script setup lang="ts">
+const AUTO_SCROLL_THRESHOLD_PX = 24
+
 const colorMode = useColorMode()
 
 const cycleColorMode = () => {
@@ -177,6 +179,7 @@ const margin = ref(36)
 const landscape = ref(false)
 const converting = ref(false)
 const progress = ref<string[]>([])
+const progressContainer = ref<HTMLElement | null>(null)
 const error = ref<string | null>(null)
 const downloadUrl = ref<string | null>(null)
 const downloadFilename = ref('')
@@ -197,6 +200,21 @@ const features = [
 ]
 
 let eventSource: EventSource | null = null
+
+watch(
+  () => progress.value.length,
+  async () => {
+    if (!converting.value) return
+    if (!progressContainer.value) return
+
+    const distanceFromBottom = progressContainer.value.scrollHeight - progressContainer.value.scrollTop - progressContainer.value.clientHeight
+    const shouldAutoScroll = distanceFromBottom <= AUTO_SCROLL_THRESHOLD_PX
+
+    await nextTick()
+    if (!progressContainer.value || !shouldAutoScroll) return
+    progressContainer.value.scrollTop = progressContainer.value.scrollHeight
+  }
+)
 
 const convert = () => {
   if (!url.value.trim() || converting.value) return
