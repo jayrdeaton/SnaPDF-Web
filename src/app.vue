@@ -162,7 +162,7 @@
 
       <!-- Progress terminal — always dark, intentionally -->
       <div v-if="progress.length > 0 || error" ref="progressContainer" class="bg-black border border-zinc-800 rounded-2xl p-5 mb-6 font-mono text-sm leading-relaxed overflow-auto max-h-64">
-        <p v-for="(msg, i) in progress" :key="i" class="text-emerald-400"><span class="text-zinc-600 select-none">› </span>{{ msg }}</p>
+        <p v-for="(msg, i) in progress" :key="i" class="text-violet-400"><span class="text-zinc-600 select-none">› </span>{{ msg }}</p>
         <p v-if="error" class="text-red-400"><span class="text-zinc-600 select-none">✗ </span>{{ error }}</p>
         <span v-if="converting" class="text-zinc-500 animate-pulse">▌</span>
       </div>
@@ -225,11 +225,11 @@
         <div class="grid sm:grid-cols-2 gap-4 mb-8">
           <div>
             <p class="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-2">Install</p>
-            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-emerald-600 dark:text-emerald-400 shadow-sm dark:shadow-none">npm install -g snapdf</div>
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-violet-600 dark:text-violet-400 shadow-sm dark:shadow-none">npm install -g snapdf</div>
           </div>
           <div>
             <p class="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-2">Usage</p>
-            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-emerald-600 dark:text-emerald-400 shadow-sm dark:shadow-none">snapdf &lt;url&gt; [options]</div>
+            <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-violet-600 dark:text-violet-400 shadow-sm dark:shadow-none">snapdf &lt;url&gt; [options]</div>
           </div>
         </div>
 
