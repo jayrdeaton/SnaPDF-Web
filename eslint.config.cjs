@@ -15,7 +15,7 @@ module.exports = defineConfig([
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        projectService: { allowDefaultProject: ['vitest.config.ts', 'nuxt.config.ts'] },
+        projectService: { allowDefaultProject: ['vitest.config.ts'] },
         extraFileExtensions: ['.vue']
       }
     }
