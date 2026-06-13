@@ -222,7 +222,7 @@
         </div>
 
         <!-- Divider -->
-        <div class="mt-24 pt-12 border-t border-gray-200 dark:border-zinc-800">
+        <div v-if="!isPwa" class="mt-24 pt-12 border-t border-gray-200 dark:border-zinc-800">
           <h2 class="text-2xl font-semibold mb-8 text-center">Also available as a CLI</h2>
 
           <!-- Install + Usage -->
@@ -312,6 +312,7 @@ const landscape = ref(false)
 const hideUserInput = ref(false)
 const hideAssistantOutput = ref(false)
 const autoDownload = ref(true)
+const isPwa = ref(false)
 const showAdvanced = ref(false)
 const selector = ref('')
 const converting = ref(false)
@@ -481,6 +482,7 @@ const clearHistory = () => {
 }
 
 onMounted(() => {
+  isPwa.value = window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
   const splash = document.getElementById('splash')
   if (splash) {
     splash.style.opacity = '0'
