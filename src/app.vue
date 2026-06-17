@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div id="splash" style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.25s">
-      <img src="/icon-180.png" style="width: 80px; height: 80px; border-radius: 18px" alt="" />
-    </div>
     <div class="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 flex flex-col transition-colors duration-200">
       <!-- Header -->
       <header class="border-b border-gray-200 dark:border-zinc-800 px-6 flex-shrink-0" style="padding-top: calc(1rem + env(safe-area-inset-top)); padding-bottom: 1rem">
@@ -483,11 +480,6 @@ const clearHistory = () => {
 
 onMounted(() => {
   isPwa.value = window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
-  const splash = document.getElementById('splash')
-  if (splash) {
-    splash.style.opacity = '0'
-    setTimeout(() => splash.remove(), 250)
-  }
 })
 
 onUnmounted(() => {
