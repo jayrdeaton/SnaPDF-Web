@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div class="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 flex flex-col transition-colors duration-200">
+    <div class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-zinc-900" style="height: env(safe-area-inset-top)" aria-hidden="true" />
+    <div class="fixed inset-x-0 z-30 bg-gray-200 dark:bg-zinc-800" style="top: env(safe-area-inset-top); height: 1px" aria-hidden="true" />
+    <div class="fixed inset-x-0 bottom-0 z-30 bg-gray-200 dark:bg-zinc-800" style="height: 1px" aria-hidden="true" />
+    <div class="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 flex flex-col" :class="{ 'transition-colors duration-200': mounted }">
       <!-- Header -->
-      <header class="border-b border-gray-200 dark:border-zinc-800 px-6 flex-shrink-0" style="padding-top: calc(1rem + env(safe-area-inset-top)); padding-bottom: 1rem">
+      <header class="relative z-40 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 px-6 shrink-0" style="padding-top: calc(1rem + env(safe-area-inset-top)); padding-bottom: 1rem">
         <div class="max-w-3xl mx-auto flex items-center justify-between">
           <div class="flex items-center gap-2">
             <img src="/icon.svg" alt="SnaPDF" class="w-6 h-6" />
@@ -48,10 +51,10 @@
       </header>
 
       <!-- Main -->
-      <main class="flex-1 max-w-3xl mx-auto w-full px-6 py-14">
+      <main class="flex-1 max-w-3xl mx-auto w-full px-6 pt-10 pb-14">
         <!-- Hero -->
         <div class="mb-10 text-center">
-          <h1 class="text-4xl font-bold tracking-tight mb-3">Save any web page as PDF or text.</h1>
+          <h1 class="text-4xl font-bold tracking-tight mb-3">Save any web page as PDF or text</h1>
           <p class="text-gray-500 dark:text-zinc-400 text-lg leading-relaxed">Paste a ChatGPT or Claude share link, choose your settings, and download in seconds.<br />Works with any JavaScript-rendered page.</p>
         </div>
 
@@ -172,7 +175,7 @@
         <div v-if="activeItem" ref="previewContainer" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl overflow-hidden mb-4 shadow-sm dark:shadow-none">
           <div class="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 dark:border-zinc-800">
             <span class="text-sm font-medium text-gray-700 dark:text-zinc-300 truncate">{{ activeItem.filename }}</span>
-            <div class="flex items-center gap-4 flex-shrink-0 ml-4">
+            <div class="flex items-center gap-4 shrink-0 ml-4">
               <a :href="activeItem.blobUrl" :download="activeItem.filename" class="text-xs font-semibold text-violet-500 hover:text-violet-400 transition-colors">↓ Download</a>
               <button type="button" aria-label="Clear" class="text-gray-400 dark:text-zinc-500 hover:text-red-400 transition-colors" @click="clearHistory">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -183,7 +186,7 @@
             </div>
           </div>
           <iframe v-if="activeItem.mimeType === 'application/pdf'" :src="activeItem.blobUrl" class="w-full border-0" style="height: 600px" title="PDF preview" />
-          <pre v-else class="p-5 text-sm font-mono text-gray-700 dark:text-zinc-300 overflow-auto max-h-96 whitespace-pre-wrap break-words">{{ activeItem.textContent }}</pre>
+          <pre v-else class="p-5 text-sm font-mono text-gray-700 dark:text-zinc-300 overflow-auto max-h-96 whitespace-pre-wrap wrap-break-word">{{ activeItem.textContent }}</pre>
         </div>
 
         <!-- Session history -->
@@ -193,22 +196,22 @@
             <button class="text-xs text-gray-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" @click="clearHistory">Clear all</button>
           </div>
           <div v-for="(item, index) in history" :key="item.id" :class="['flex items-center gap-3 px-5 py-3 cursor-pointer transition-colors', index < history.length - 1 ? 'border-b border-gray-100 dark:border-zinc-800' : '', activeItem?.id === item.id ? 'bg-violet-50 dark:bg-violet-950/30' : 'hover:bg-gray-50 dark:hover:bg-zinc-800/50']" @click="activeItem = item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-gray-400 dark:text-zinc-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-gray-400 dark:text-zinc-500">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
             <div class="flex-1 min-w-0">
               <div class="flex items-baseline gap-2">
                 <p class="text-sm font-medium truncate">{{ item.filename }}</p>
-                <span class="flex-shrink-0 text-xs text-gray-400 dark:text-zinc-500">{{ formatSize(item.size) }}</span>
+                <span class="shrink-0 text-xs text-gray-400 dark:text-zinc-500">{{ formatSize(item.size) }}</span>
               </div>
               <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
                 <span v-for="badge in settingBadges(item.settings)" :key="badge" class="inline-block text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400">{{ badge }}</span>
                 <p v-if="settingBadges(item.settings).length === 0" class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ item.sourceUrl }}</p>
               </div>
             </div>
-            <span class="flex-shrink-0 text-xs text-gray-400 dark:text-zinc-500">{{ formatTime(item.timestamp) }}</span>
-            <a :href="item.blobUrl" :download="item.filename" class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-colors" title="Download" @click.stop>
+            <span class="shrink-0 text-xs text-gray-400 dark:text-zinc-500">{{ formatTime(item.timestamp) }}</span>
+            <a :href="item.blobUrl" :download="item.filename" class="shrink-0 flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-colors" title="Download" @click.stop>
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
@@ -256,7 +259,7 @@
       </main>
 
       <!-- Footer -->
-      <footer class="border-t border-gray-200 dark:border-zinc-800 py-6 text-center text-sm text-gray-400 dark:text-zinc-500 flex-shrink-0">
+      <footer v-if="!isPwa" class="relative z-40 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 py-6 text-center text-sm text-gray-400 dark:text-zinc-500 shrink-0">
         Powered by
         <a href="https://infinitetoken.com" target="_blank" rel="noopener" class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 underline underline-offset-2 ml-1 transition-colors">Infinite Token</a>
       </footer>
@@ -478,7 +481,10 @@ const clearHistory = () => {
   activeItem.value = null
 }
 
+const mounted = ref(false)
+
 onMounted(() => {
+  mounted.value = true
   isPwa.value = window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
 })
 
