@@ -3,7 +3,7 @@
     <div class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-zinc-900" style="height: env(safe-area-inset-top)" aria-hidden="true" />
     <div class="fixed inset-x-0 z-30 bg-gray-200 dark:bg-zinc-800" style="top: env(safe-area-inset-top); height: 1px" aria-hidden="true" />
     <div class="fixed inset-x-0 bottom-0 z-30 bg-gray-200 dark:bg-zinc-800" style="height: 1px" aria-hidden="true" />
-    <div class="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 flex flex-col" :class="{ 'transition-colors duration-200': mounted }">
+    <div class="min-h-dvh bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 flex flex-col" :class="{ 'transition-colors duration-200': mounted }">
       <!-- Header -->
       <header class="relative z-40 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 px-6 shrink-0" style="padding-top: calc(1rem + env(safe-area-inset-top)); padding-bottom: 1rem">
         <div class="max-w-3xl mx-auto flex items-center justify-between">
@@ -63,21 +63,7 @@
           <!-- URL -->
           <div class="mb-5">
             <label for="url-input" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Share link</label>
-            <div class="relative">
-              <input id="url-input" v-model="url" :type="hideUrl ? 'password' : 'url'" autocomplete="off" placeholder="https://chatgpt.com/share/..." :disabled="converting" class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 pr-10 text-sm placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 disabled:opacity-50 transition-colors" />
-              <button type="button" :aria-label="hideUrl ? 'Show URL' : 'Hide URL'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors" @click="hideUrl = !hideUrl">
-                <!-- Eye: URL visible, click to hide -->
-                <svg v-if="!hideUrl" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                <!-- Eye-off: URL hidden, click to show -->
-                <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                  <line x1="1" y1="1" x2="23" y2="23" />
-                </svg>
-              </button>
-            </div>
+            <input id="url-input" v-model="url" type="url" autocomplete="off" placeholder="https://chatgpt.com/share/..." :disabled="converting" class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-sm placeholder-gray-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 disabled:opacity-50 transition-colors" />
           </div>
 
           <!-- Settings row -->
@@ -222,7 +208,7 @@
         </div>
 
         <!-- Divider -->
-        <div v-if="!isPwa" class="mt-24 pt-12 border-t border-gray-200 dark:border-zinc-800">
+        <div v-if="isMounted && !isPwa" class="mt-24 pt-12 border-t border-gray-200 dark:border-zinc-800">
           <h2 class="text-2xl font-semibold mb-8 text-center">Also available as a CLI</h2>
 
           <!-- Install + Usage -->
@@ -259,7 +245,7 @@
       </main>
 
       <!-- Footer -->
-      <footer v-if="!isPwa" class="relative z-40 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 py-6 text-center text-sm text-gray-400 dark:text-zinc-500 shrink-0">
+      <footer v-if="isMounted && !isPwa" class="relative z-40 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 py-6 text-center text-sm text-gray-400 dark:text-zinc-500 shrink-0">
         Powered by
         <a href="https://infinitetoken.com" target="_blank" rel="noopener" class="text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 underline underline-offset-2 ml-1 transition-colors">Infinite Token</a>
       </footer>
@@ -302,7 +288,6 @@ const cycleColorMode = () => {
 }
 
 const url = ref('')
-const hideUrl = ref(false)
 const format = ref<'pdf' | 'txt'>('pdf')
 const letterRegions = new Set(['US', 'CA', 'MX', 'PH', 'CO', 'VE', 'GT', 'HN', 'SV', 'NI', 'CR', 'PA', 'CU', 'DO', 'PR'])
 const detectedRegion = import.meta.client ? (new Intl.Locale(navigator.language).region ?? '') : ''
@@ -312,7 +297,7 @@ const landscape = ref(false)
 const hideUserInput = ref(false)
 const hideAssistantOutput = ref(false)
 const autoDownload = ref(true)
-const { isPwa } = usePwa()
+const { isPwa, isMounted } = usePwa()
 const showAdvanced = ref(false)
 const selector = ref('')
 const converting = ref(false)
