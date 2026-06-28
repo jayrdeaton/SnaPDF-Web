@@ -2,7 +2,7 @@
   "name": "snapdf-web",
   "displayName": "SnaPDF",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Save any JavaScript-rendered web page as PDF or text.",
   "author": "Jay Deaton",
   "license": "MIT",
