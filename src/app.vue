@@ -312,7 +312,7 @@ const landscape = ref(false)
 const hideUserInput = ref(false)
 const hideAssistantOutput = ref(false)
 const autoDownload = ref(true)
-const isPwa = ref(false)
+const { isPwa } = usePwa()
 const showAdvanced = ref(false)
 const selector = ref('')
 const converting = ref(false)
@@ -485,7 +485,6 @@ const mounted = ref(false)
 
 onMounted(() => {
   mounted.value = true
-  isPwa.value = window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
 })
 
 onUnmounted(() => {
