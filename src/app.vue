@@ -51,7 +51,7 @@
       </header>
 
       <!-- Main -->
-      <main class="flex-1 max-w-3xl mx-auto w-full px-6 pt-10 pb-14">
+      <main class="flex-1 max-w-3xl mx-auto w-full px-6 pt-10 pb-10">
         <!-- Hero -->
         <div class="mb-10 text-center">
           <h1 class="text-4xl font-bold tracking-tight mb-3">Save any web page as PDF or text</h1>
@@ -197,7 +197,7 @@
               </div>
             </div>
             <span class="shrink-0 text-xs text-gray-400 dark:text-zinc-500">{{ formatTime(item.timestamp) }}</span>
-            <a :href="item.blobUrl" :download="item.filename" class="shrink-0 flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-colors" title="Download" @click.stop>
+            <a :href="item.blobUrl" :download="item.filename" class="shrink-0 flex items-center justify-center w-7 h-7 rounded-lg bg-violet-500 hover:bg-violet-400 text-white transition-colors" title="Download" @click.stop>
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
@@ -207,40 +207,21 @@
           </div>
         </div>
 
-        <!-- Divider -->
-        <div v-if="isMounted && !isPwa" class="mt-24 pt-12 border-t border-gray-200 dark:border-zinc-800">
-          <h2 class="text-2xl font-semibold mb-8 text-center">Also available as a CLI</h2>
-
-          <!-- Install + Usage -->
-          <div class="grid sm:grid-cols-2 gap-4 mb-8">
-            <div>
-              <p class="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-2">Install</p>
-              <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-violet-600 dark:text-violet-400 shadow-sm dark:shadow-none">npm install -g snapdf</div>
-            </div>
-            <div>
-              <p class="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wider mb-2">Usage</p>
-              <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl px-4 py-3 font-mono text-sm text-violet-600 dark:text-violet-400 shadow-sm dark:shadow-none">snapdf &lt;url&gt; [options]</div>
-            </div>
-          </div>
-
-          <!-- Options -->
-          <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5 mb-10 font-mono text-sm text-gray-700 dark:text-zinc-300 leading-7 shadow-sm dark:shadow-none">
-            <p><span class="text-violet-500 dark:text-violet-400">--format</span> <span class="text-gray-400 dark:text-zinc-500">pdf|txt</span> Output format (default: pdf)</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--page-size</span> <span class="text-gray-400 dark:text-zinc-500">letter|a4</span> Paper size (default: letter)</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--landscape</span> Landscape orientation</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--selector</span> <span class="text-gray-400 dark:text-zinc-500">css</span> CSS selector for content nodes</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--hide-user-input</span> Omit user messages from output</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--hide-assistant-output</span> Omit assistant messages from output</p>
-            <p><span class="text-violet-500 dark:text-violet-400">--timeout</span> <span class="text-gray-400 dark:text-zinc-500">ms</span> Navigation timeout (default: 60000)</p>
-          </div>
-
-          <!-- Feature cards -->
+        <!-- How SnaPDF works -->
+        <div v-if="isMounted && !isPwa" class="mt-8 space-y-6">
+          <h2 class="text-lg font-semibold text-center text-gray-700 dark:text-zinc-200">How SnaPDF works</h2>
           <div class="grid sm:grid-cols-3 gap-4">
             <div v-for="feature in features" :key="feature.title" class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5 shadow-sm dark:shadow-none">
               <h3 class="font-semibold mb-1.5">{{ feature.title }}</h3>
               <p class="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">{{ feature.description }}</p>
             </div>
           </div>
+        </div>
+
+        <!-- Also available as a CLI -->
+        <div v-if="isMounted && !isPwa" class="mt-8 space-y-6">
+          <h2 class="text-lg font-semibold text-center text-gray-700 dark:text-zinc-200">Command line</h2>
+          <CliSection />
         </div>
       </main>
 
