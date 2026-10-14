@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
       executablePath = await c.executablePath()
       args = c.args
     } catch {
-      // @sparticuz/chromium not installed — Puppeteer will use its bundled Chrome
+      // @sparticuz/chromium not installed - Puppeteer will use its bundled Chrome
     }
   }
 

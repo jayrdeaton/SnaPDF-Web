@@ -78,7 +78,7 @@
               </div>
             </div>
 
-            <!-- Page size — PDF only -->
+            <!-- Page size - PDF only -->
             <div v-if="format === 'pdf'">
               <label for="page-size" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Page size</label>
               <select id="page-size" v-model="pageSize" :disabled="converting" class="bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-violet-500">
@@ -87,13 +87,13 @@
               </select>
             </div>
 
-            <!-- Margin — PDF only -->
+            <!-- Margin - PDF only -->
             <div v-if="format === 'pdf'">
               <label for="margin" class="block text-sm font-medium text-gray-500 dark:text-zinc-400 mb-1.5">Margin <span class="font-normal text-gray-400 dark:text-zinc-500">(pt)</span></label>
               <input id="margin" v-model.number="margin" type="number" min="0" max="144" :disabled="converting" class="w-20 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-zinc-300 disabled:opacity-50 focus:outline-none focus:border-violet-500" />
             </div>
 
-            <!-- Landscape — PDF only -->
+            <!-- Landscape - PDF only -->
             <div v-if="format === 'pdf'" class="flex items-center pb-0.5">
               <label class="flex items-center gap-2 cursor-pointer select-none">
                 <input v-model="landscape" type="checkbox" :disabled="converting" class="w-4 h-4 accent-violet-500 disabled:opacity-50" />
@@ -150,7 +150,7 @@
           <button v-else class="w-full bg-red-500 hover:bg-red-400 text-white font-semibold rounded-lg py-3 text-sm transition-colors" @click="cancel">Cancel</button>
         </div>
 
-        <!-- Progress terminal — always dark, intentionally -->
+        <!-- Progress terminal - always dark, intentionally -->
         <div v-if="progress.length > 0 || error" ref="progressContainer" class="bg-black border border-zinc-800 rounded-2xl p-5 mb-6 font-mono text-sm leading-relaxed overflow-auto max-h-64">
           <p v-for="(msg, i) in progress" :key="i" class="text-violet-400"><span class="text-zinc-600 select-none">› </span>{{ msg }}</p>
           <p v-if="error" class="text-red-400"><span class="text-zinc-600 select-none">✗ </span>{{ error }}</p>
@@ -327,7 +327,7 @@ const cancel = () => {
 const features = [
   {
     title: 'Virtual scroll support',
-    description: 'Handles lazy-loading and infinite scroll pages like ChatGPT and Claude.ai — every message captured.'
+    description: 'Handles lazy-loading and infinite scroll pages like ChatGPT and Claude.ai: every message captured.'
   },
   {
     title: 'PDF or plain text',
@@ -434,7 +434,7 @@ const convert = () => {
 
   eventSource.onerror = () => {
     if (converting.value) {
-      error.value = 'Connection error — check the URL and try again.'
+      error.value = 'Connection error: check the URL and try again.'
       converting.value = false
     }
     eventSource?.close()
