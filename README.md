@@ -1,13 +1,13 @@
 # SnaPDF Web
 
-Website for [SnaPDF](https://github.com/jayrdeaton/snapdf) — save any JavaScript-rendered page as a PDF or plain text file. Paste a ChatGPT or Claude share link, pick your settings, and download in seconds.
+Website for [SnaPDF](https://github.com/jayrdeaton/snapdf): save any JavaScript-rendered page as a PDF or plain text file. Paste a ChatGPT or Claude share link, pick your settings, and download in seconds.
 
 Built with [Nuxt 4](https://nuxt.com), deployed on [Vercel](https://vercel.com).
 
 ## Features
 
 - Converts any JS-rendered page (ChatGPT, Claude, etc.) to PDF or plain text
-- Handles virtual scroll and lazy-loaded content — every message captured
+- Handles virtual scroll and lazy-loaded content, so every message is captured
 - PDF options: page size (Letter/A4), margin, landscape orientation
 - Selectively hide user prompts or assistant responses
 - CSS selector override for custom content targeting
@@ -17,18 +17,18 @@ Built with [Nuxt 4](https://nuxt.com), deployed on [Vercel](https://vercel.com).
 
 ## API
 
-`GET /api/convert` — streams progress over SSE, then delivers the file as a base64 payload.
+`GET /api/convert`: streams progress over SSE, then delivers the file as a base64 payload.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `url` | string | — | Page URL to convert (required) |
+| `url` | string | - | Page URL to convert (required) |
 | `format` | `pdf` \| `txt` | `pdf` | Output format |
 | `pageSize` | `letter` \| `a4` | `letter` | PDF page size |
 | `margin` | number | `36` | PDF margin in points |
 | `landscape` | boolean | `false` | Landscape orientation |
 | `hideUserInput` | boolean | `false` | Omit user messages |
 | `hideAssistantOutput` | boolean | `false` | Omit assistant messages |
-| `selector` | string | — | CSS selector for content nodes |
+| `selector` | string | - | CSS selector for content nodes |
 
 SSE event types: `progress` · `complete` · `error`
 
@@ -74,3 +74,9 @@ snapdf <url> [options]
 ```
 
 See [npmjs.com/package/snapdf](https://www.npmjs.com/package/snapdf) for full CLI docs.
+
+## License
+
+The code is released under the MIT License, see [LICENSE](LICENSE).
+
+The app's name, logo, and icons, and the original artwork in this repository, are not covered by that license and remain all rights reserved. If you fork it, please give your version its own name and look.
